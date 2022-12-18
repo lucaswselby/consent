@@ -1,6 +1,6 @@
 // initializes activities
 const kickbackPack = ["say hi to", "say bye to"];
-const partyPack = ["smoke with", "take a shot with", "team up on Jackbox with", "kiss", "play 7MiH with", "sing karaoke with", "massage", "player beer pong with"];
+const partyPack = ["say hi to", "say bye to"];
 let packPick = [];
 let currentActivities = [];
 
