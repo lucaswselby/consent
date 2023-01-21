@@ -45,35 +45,8 @@ const pickPack = pack => {
     }
   });
 
-  // handles add activity button
-  const addActivityButton = () => {
-    let newActivity = document.getElementById("addActivityField").value.trim();
-    
-    // valid activity
-    if (newActivity.length > 0 && !packPick.includes(newActivity)) {
-      currentActivities.push(newActivity);
-      packPick.push(newActivity);
-      settings = settings.concat(`<li><input type="checkbox" id="${newActivity}" name="${newActivity}" value="${newActivity}" checked="true"><label for="${newActivity}">${newActivity}</label></li>`);
-      document.getElementById("addActivityField").value = "";
-      for (let i = 0; i < players.length; i++) {
-        for (let j = 0; j < players.length; j++) {
-          if (i != j)
-            players[i].addPlayerByActivity(packPick.length - 1, players[j].name);
-        }
-      }
-      document.getElementById("changeable").innerHTML = settingsPane(settings);
-      document.getElementById("addActivityButton").onclick = addActivityButton;
-    }
-    
-    // activity is already added
-    else if (packPick.includes(newActivity)) {
-    	document.getElementById("addActivityField").value = "";
-    }
-  };
-  document.getElementById("addActivityButton").onclick = addActivityButton;
-
-	// handles Go to Sign Up button
-  document.getElementById("toSignUp").onclick = () => {
+  // handles Go to Sign Up button
+  const toSignUp = () => {
     document.getElementById("changeable").innerHTML = signUpPane("");
 
     // sign up button
@@ -168,12 +141,172 @@ const pickPack = pack => {
         else {
           document.getElementById("changeable").innerHTML = signInPane("");
 
+          const submitSignIn = () => {
+            document.getElementById("signInErrorLabel").innerHTML = "";
+            let playerProceed = true;
+          
+            // name is empty
+            if (!document.getElementById("signInName").value.trim())
+              document.getElementById("signInErrorLabel").innerHTML = "Name can\'t be empty";
+            // password is empty
+            else if (!document.getElementById("signInPassword").value.trim())
+              document.getElementById("signInErrorLabel").innerHTML = "Password can\'t be empty";
+            // player not found
+            else if (!searchPlayers(document.getElementById("signInName").value))
+              document.getElementById("signInErrorLabel").innerHTML = `\"${document.getElementById("signInName").value}\" not found`;
+            // incorrect password
+            else if (searchPlayers(document.getElementById("signInName").value).password !== document.getElementById("signInPassword").value)
+              document.getElementById("signInErrorLabel").innerHTML = "Incorrect password";
+            // name and password are correct
+            else {
+          
+              // sets the player object
+              try {
+                player = searchPlayers(document.getElementById("signInName").value);
+              } catch (e) {
+                player = null;
+                console.log(Error("Player not found. player object cannot be assigned"));
+              }
+          
+              // player answers questions about other players
+              if (player.firstPass) {
+                let questions = "";
+          
+                // adds questions and other players to questionsScrollPane
+                currentActivities.forEach(activity => {
+                  questions = questions.concat(`Would you like to ${activity}...<br>`);
+                  players.forEach(otherPlayer => {
+                    if (otherPlayer !== player) {
+                      questions = questions.concat(`<input type="checkbox" id="${activity}_${otherPlayer}" name="${activity}_${otherPlayer}" value="${activity}_${otherPlayer}"><label for="${activity}_${otherPlayer}">${otherPlayer.name}?</label><br>`);
+                    }
+                  });
+                });
+          
+                // avoids running questions again
+                player.firstPass = false;
+          
+                // sets questions scene
+                document.getElementById("changeable").innerHTML = questionsPane(questions);
+          
+                // sets onclick for checkboxes
+                currentActivities.forEach(activity => {
+                  players.forEach(otherPlayer => {
+                    if (otherPlayer !== player) {
+                      document.getElementById(`${activity}_${otherPlayer}`).onclick = () => {
+                        if (document.getElementById(`${activity}_${otherPlayer}`).checked === true) {
+                          player.addPlayerByActivity(packPick.indexOf(activity), otherPlayer.name);
+                        } else {
+                          player.removePlayerByActivity(packPick.indexOf(activity), otherPlayer.name);
+                        }
+                      };
+                    }
+                  });
+                });
+          
+                // submit questions button
+                document.getElementById("submitQuestions").onclick = () => {
+          
+                  // returns to sign in screen
+                  document.getElementById("changeable").innerHTML = signInPane("");
+          
+                  // erases error label
+                  document.getElementById("signInErrorLabel").innerHTML = "";
+          
+                  // deselects player
+                  player = null;
+          
+                  // erases name and password from sign in screen
+                  document.getElementById("signInName").value = "";
+                  document.getElementById("signInPassword").value = "";
+          
+                  // sets onclick for submitSignIn
+                  document.getElementById("submitSignIn").onclick = submitSignIn;
+                };
+              }
+          
+              // player views matches with other players
+              else {
+          
+                // match players
+                for (let i = 0; i < packPick.length; i++) { // for every activity
+                  players.forEach(other => {
+                    if (other !== player // for every other player
+                      &&
+                      other.playersPerActivity[i].includes(player.name) // if they want you
+                      &&
+                      player.playersPerActivity[i].includes(other.name)) { // and you want them
+                      player.addMatchByActivity(i, other.name); // add them to your matches
+                    }
+                  });
+                }
+          
+                // lists the results
+                let noMatches = true;
+                let results = "";
+                for (let i = 0; i < packPick.length; i++) {
+                  if (player.matchesPerActivity[i].length) {
+                    noMatches = false;
+                    results = results.concat(`${packPick[i]}:<ul>`);
+                    player.matchesPerActivity[i].forEach(name => {
+                      results = results.concat(`<li>${name}</li>`);
+                    });
+                    results = results.concat("</ul>");
+                  }
+                }
+                if (noMatches)
+                  results = results.concat("<p>NO MATCHES</p>");
+          
+                // set scene to results
+                document.getElementById("changeable").innerHTML = resultsPane(results);
+          
+                // go back to sign in after results
+                document.getElementById("leaveResults").onclick = () => {
+          
+                  // goes back to sign in screen
+                  document.getElementById("changeable").innerHTML = signInPane("");
+                  document.getElementById("signInName").value = "";
+                  document.getElementById("signInPassword").value = "";
+                  document.getElementById("submitSignIn").onclick = submitSignIn;
+                };
+              }
+            }
+          };
+
           // sign in button
           document.getElementById("submitSignIn").onclick = submitSignIn;
         }
       }
     };
   };
+
+  // handles add activity button
+  const addActivityButton = () => {
+    let newActivity = document.getElementById("addActivityField").value.trim();
+    
+    // valid activity
+    if (newActivity.length > 0 && !packPick.includes(newActivity)) {
+      currentActivities.push(newActivity);
+      packPick.push(newActivity);
+      settings = settings.concat(`<li><input type="checkbox" id="${newActivity}" name="${newActivity}" value="${newActivity}" checked="true"><label for="${newActivity}">${newActivity}</label></li>`);
+      document.getElementById("addActivityField").value = "";
+      for (let i = 0; i < players.length; i++) {
+        for (let j = 0; j < players.length; j++) {
+          if (i != j)
+            players[i].addPlayerByActivity(packPick.length - 1, players[j].name);
+        }
+      }
+      document.getElementById("changeable").innerHTML = settingsPane(settings);
+      document.getElementById("addActivityButton").onclick = addActivityButton;
+      document.getElementById("toSignUp").onclick = toSignUp;
+    }
+    
+    // activity is already added
+    else if (packPick.includes(newActivity)) {
+    	document.getElementById("addActivityField").value = "";
+    }
+  };
+  document.getElementById("addActivityButton").onclick = addActivityButton;
+  document.getElementById("toSignUp").onclick = toSignUp;
 }
 
 // welcome button
@@ -188,7 +321,7 @@ document.getElementById("welcomeButton").onclick = () => {
     pickPack(kickbackPack);
   };
   document.getElementById("customPackButton").onclick = () => {
-    pickPack(customPack);
+    pickPack([]);
   };
 };
 
@@ -197,134 +330,3 @@ const searchPlayers = (playerName) => {
   players.forEach(p => playerNames.push(p.name));
   return players[playerNames.indexOf(playerName)];
 }
-
-const submitSignIn = () => {
-  document.getElementById("signInErrorLabel").innerHTML = "";
-  let playerProceed = true;
-
-  // name is empty
-  if (!document.getElementById("signInName").value.trim())
-    document.getElementById("signInErrorLabel").innerHTML = "Name can\'t be empty";
-  // password is empty
-  else if (!document.getElementById("signInPassword").value.trim())
-    document.getElementById("signInErrorLabel").innerHTML = "Password can\'t be empty";
-  // player not found
-  else if (!searchPlayers(document.getElementById("signInName").value))
-  	document.getElementById("signInErrorLabel").innerHTML = `\"${document.getElementById("signInName").value}\" not found`;
-  // incorrect password
-  else if (searchPlayers(document.getElementById("signInName").value).password !== document.getElementById("signInPassword").value)
-  	document.getElementById("signInErrorLabel").innerHTML = "Incorrect password";
-	// name and password are correct
-  else {
-
-    // sets the player object
-    try {
-      player = searchPlayers(document.getElementById("signInName").value);
-    } catch (e) {
-      player = null;
-      console.log(Error("Player not found. player object cannot be assigned"));
-    }
-
-    // player answers questions about other players
-    if (player.firstPass) {
-      let questions = "";
-
-      // adds questions and other players to questionsScrollPane
-      currentActivities.forEach(activity => {
-        questions = questions.concat(`Would you like to ${activity}...<br>`);
-        players.forEach(otherPlayer => {
-          if (otherPlayer !== player) {
-            questions = questions.concat(`<input type="checkbox" id="${activity}_${otherPlayer}" name="${activity}_${otherPlayer}" value="${activity}_${otherPlayer}"><label for="${activity}_${otherPlayer}">${otherPlayer.name}?</label><br>`);
-          }
-        });
-      });
-
-      // avoids running questions again
-      player.firstPass = false;
-
-      // sets questions scene
-      document.getElementById("changeable").innerHTML = questionsPane(questions);
-
-      // sets onclick for checkboxes
-      currentActivities.forEach(activity => {
-        players.forEach(otherPlayer => {
-          if (otherPlayer !== player) {
-            document.getElementById(`${activity}_${otherPlayer}`).onclick = () => {
-              if (document.getElementById(`${activity}_${otherPlayer}`).checked === true) {
-                player.addPlayerByActivity(packPick.indexOf(activity), otherPlayer.name);
-              } else {
-                player.removePlayerByActivity(packPick.indexOf(activity), otherPlayer.name);
-              }
-            };
-          }
-        });
-      });
-
-      // submit questions button
-      document.getElementById("submitQuestions").onclick = () => {
-
-        // returns to sign in screen
-        document.getElementById("changeable").innerHTML = signInPane("");
-
-        // erases error label
-        document.getElementById("signInErrorLabel").innerHTML = "";
-
-        // deselects player
-        player = null;
-
-        // erases name and password from sign in screen
-        document.getElementById("signInName").value = "";
-        document.getElementById("signInPassword").value = "";
-
-        // sets onclick for submitSignIn
-        document.getElementById("submitSignIn").onclick = submitSignIn;
-      };
-    }
-
-    // player views matches with other players
-    else {
-
-      // match players
-      for (let i = 0; i < packPick.length; i++) { // for every activity
-        players.forEach(other => {
-          if (other !== player // for every other player
-            &&
-            other.playersPerActivity[i].includes(player.name) // if they want you
-            &&
-            player.playersPerActivity[i].includes(other.name)) { // and you want them
-            player.addMatchByActivity(i, other.name); // add them to your matches
-          }
-        });
-      }
-
-      // lists the results
-      let noMatches = true;
-      let results = "";
-      for (let i = 0; i < packPick.length; i++) {
-        if (player.matchesPerActivity[i].length) {
-          noMatches = false;
-          results = results.concat(`${packPick[i]}:<ul>`);
-          player.matchesPerActivity[i].forEach(name => {
-            results = results.concat(`<li>${name}</li>`);
-          });
-          results = results.concat("</ul>");
-        }
-      }
-      if (noMatches)
-        results = results.concat("<p>NO MATCHES</p>");
-
-      // set scene to results
-      document.getElementById("changeable").innerHTML = resultsPane(results);
-
-      // go back to sign in after results
-      document.getElementById("leaveResults").onclick = () => {
-
-        // goes back to sign in screen
-        document.getElementById("changeable").innerHTML = signInPane("");
-        document.getElementById("signInName").value = "";
-        document.getElementById("signInPassword").value = "";
-				document.getElementById("submitSignIn").onclick = submitSignIn;
-      };
-    }
-  }
-};
