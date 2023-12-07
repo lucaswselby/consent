@@ -1,4 +1,5 @@
 // initializes activities
+const datePack = ["Shopping", "Escape Room", "Open Mic", "Bowling", "Laser Tag", "Arcade", "Community Class", "Cooking", "Candle making", "Paint Night", "Pottery Night", "Jade & Clover", "Snakes & Lattes", "Pool", "Therapy Den", "Legos", "The Ultimatum", "Only Murders in the Building", "Stardew", "Sex", "Spa Day", "Planning next out-of-house date", "Study"];
 const kickbackPack = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l"];
 const partyPack = ["say hi to", "say bye to"];
 let packPick = [];
@@ -8,7 +9,21 @@ let player;
 let players = [];
 
 // initializes panes
-const packPane = "<h1>Packs</h1><table><tr><td><input id=\"partyPackButton\" type=\"button\" value=\"Party Pack\"></td></tr><tr><td><input id=\"kickbackPackButton\" type=\"button\" value=\"Kickback Pack\"></td></tr><tr><td><input id=\"customPackButton\" type=\"button\" value=\"Custom Pack\"></td></tr></table>";
+const packPane = `<h1>Packs</h1>
+<table>
+  <tr>
+    <td><input id=\"datePackButton\" type=\"button\" value=\"Date Pack\"></td>
+  </tr>
+  <tr>
+    <td><input id=\"partyPackButton\" type=\"button\" value=\"Party Pack\"></td>
+  </tr>
+  <tr>
+    <td><input id=\"kickbackPackButton\" type=\"button\" value=\"Kickback Pack\"></td>
+  </tr>
+  <tr>
+    <td><input id=\"customPackButton\" type=\"button\" value=\"Custom Pack\"></td>
+  </tr>
+</table>`;
 const signUpPane = error => `<h1 id=\"signUpHeader\">Sign Up</h1><div id="signUpNamePane"><label for=\"signUpName\">Name: </label><input type=\"text\" id=\"signUpName\" name=\"signUpName\"></div><div id="signUpPasswordPane"><label for=\"signUpPassword\">Password: </label><input type=\"text\" id=\"signUpPassword\" name=\"signUpPassword\"></div><input type=\"button\" id=\"submitSignUp\" value=\"Sign Up\"><div id=\"signUpErrorLabel\">${error}</div><h2 id=\"playersAddedLabel\">Players Added:</h2><input type=\"button\" id=\"everybodysInButton\" value=\"Everybody's In!\">`;
 const signInPane = errorText => `<h1 id=\"signInHeader\">Sign In</h1><label for=\"signInName\">Name: </label><input type=\"text\" id=\"signInName\" name=\"signInName\"><label for=\"signInPassword\">Password: </label><input type=\"text\" id=\"signInPassword\" name=\"signInPassword\"><input type=\"button\" id=\"submitSignIn\" value=\"Sign In\"><div id=\"signInErrorLabel\">${errorText}</div>`;
 const questionsPane = questions => `<p id=\"questionsInstructionsLabel\">Select every person you would want to do the activity with:</p><div id=\"questionsPane\">${questions}</div><input type=\"button\" id=\"submitQuestions\" value=\"Submit\">`;
@@ -314,6 +329,9 @@ document.getElementById("welcomeButton").onclick = () => {
   document.getElementById("changeable").innerHTML = packPane;
 
   // packPane buttons
+  document.getElementById("datePackButton").onclick = () => {
+    pickPack(datePack);
+  };
   document.getElementById("partyPackButton").onclick = () => {
     pickPack(partyPack);
   };
