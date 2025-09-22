@@ -1,5 +1,5 @@
 // initializes activities
-const datePack = ["watch Chicago", "watch Dimension 20", "watch a Dropout show", "watch Steven Universe", "watch Gravity Falls", "write", "sex", "listen to The Judgies", "play HPHB", "research local activities", "play Lego HP", "write music", "Legos", "play a board game", "watch I Am Mother", "watch Sex Education", "cook"];
+const datePack = ["watch Chicago", "watch Dimension 20", "watch a Dropout show", "watch Invincible", "watch Superstore", "watch Zombies", "write", "sex", "listen to The Judgies", "play HPHB", "research local activities", "play Lego HP", "write music", "Legos", "play a board game", "watch Sex Education", "cook", "Pok&eacute;mon Go"];
 const kickbackPack = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l"];
 const partyPack = ["say hi to", "say bye to"];
 let packPick = [];
