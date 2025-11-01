@@ -12,35 +12,64 @@ let players = [];
 const packPane = `<h1>Packs</h1>
 <table>
   <tr>
-    <td><input id=\"datePackButton\" type=\"button\" value=\"Date Pack\"></td>
+    <td><input id="datePackButton" type="button" value="Date Pack"></td>
   </tr>
   <tr>
-    <td><input id=\"partyPackButton\" type=\"button\" value=\"Party Pack\"></td>
+    <td><input id="partyPackButton" type="button" value="Party Pack"></td>
   </tr>
   <tr>
-    <td><input id=\"kickbackPackButton\" type=\"button\" value=\"Kickback Pack\"></td>
+    <td><input id="kickbackPackButton" type="button" value="Kickback Pack"></td>
   </tr>
   <tr>
-    <td><input id=\"customPackButton\" type=\"button\" value=\"Custom Pack\"></td>
+    <td><input id="customPackButton" type="button" value="Custom Pack"></td>
   </tr>
 </table>`;
-const signUpPane = error => `<h1 id=\"signUpHeader\">Sign Up</h1><div id="signUpNamePane"><label for=\"signUpName\">Name: </label><input type=\"text\" id=\"signUpName\" name=\"signUpName\"></div><div id="signUpPasswordPane"><label for=\"signUpPassword\">Password: </label><input type=\"text\" id=\"signUpPassword\" name=\"signUpPassword\"></div><input type=\"button\" id=\"submitSignUp\" value=\"Sign Up\"><div id=\"signUpErrorLabel\">${error}</div><h2 id=\"playersAddedLabel\">Players Added:</h2><input type=\"button\" id=\"everybodysInButton\" value=\"Everybody's In!\">`;
-const signInPane = errorText => `<h1 id=\"signInHeader\">Sign In</h1><label for=\"signInName\">Name: </label><input type=\"text\" id=\"signInName\" name=\"signInName\"><label for=\"signInPassword\">Password: </label><input type=\"text\" id=\"signInPassword\" name=\"signInPassword\"><input type=\"button\" id=\"submitSignIn\" value=\"Sign In\"><div id=\"signInErrorLabel\">${errorText}</div>`;
-const questionsPane = questions => `<p id=\"questionsInstructionsLabel\">Select every person you would want to do the activity with:</p><div id=\"questionsPane\">${questions}</div><input type=\"button\" id=\"submitQuestions\" value=\"Submit\">`;
-const resultsPane = results => `<h1 id=\"resultsLabel\">Results</h1><div id=\"listResultsPane\">${results}</div><input type=\"button\" id=\"leaveResults\" value=\"Back to Sign In\">`;
-const settingsPane = settings => `<h1>Settings</h1><p id=\"settingsLabel\">Select all activities you want in the game.</p><ul id=\"settingsScrollPane\">${settings}</ul><label for=\"addActivityField\">Add your own: <\label><input type=\"text\" id=\"addActivityField\" name=\"addActivityField\"><input type=\"button\" id=\"addActivityButton\" value=\"Add Activity\"><input type=\"button\" id=\"toSignUp\" value=\"Go to Sign Up\">`;
+const signUpPane = error => `<h1 id="signUpHeader">Sign Up</h1>
+  <div id="signUpNamePane">
+    <label for="signUpName">Name: </label>
+    <input type="text" id="signUpName" name="signUpName">
+  </div>
+  <div id="signUpPasswordPane">
+    <label for="signUpPassword">Password: </label>
+    <input type="text" id="signUpPassword" name="signUpPassword">
+  </div>
+  <input type="button" id="submitSignUp" value="Sign Up">
+  <div id="signUpErrorLabel">${error}</div>
+  <h2 id="playersAddedLabel">Players Added:</h2>
+  <input type="button" id="everybodysInButton" value="Everybody's In!">`;
+const signInPane = errorText => `<h1 id="signInHeader">Sign In</h1>
+  <label for="signInName">Name: </label>
+  <input type="text" id="signInName" name="signInName">
+  <label for="signInPassword">Password: </label>
+  <input type="text" id="signInPassword" name="signInPassword">
+  <input type="button" id="submitSignIn" value="Sign In">
+  <div id="signInErrorLabel">${errorText}</div>`;
+const questionsPane = questions => `<p id="questionsInstructionsLabel">Select every person you would want to do the activity with:</p>
+  <div id="questionsPane">${questions}</div>
+  <input type="button" id="submitQuestions" value="Submit">`;
+const resultsPane = results => `<h1 id="resultsLabel">Results</h1>
+  <div id="listResultsPane">${results}</div>
+  <input type="button" id="leaveResults" value="Back to Sign In">`;
+const settingsPane = settings => `<h1>Settings</h1>
+  <p id="settingsLabel">Select all activities you want in the game.</p>
+  <ul id="settingsScrollPane">${settings}</ul>
+  <label for="addActivityField">Add your own: </label>
+  <input type="text" id="addActivityField" name="addActivityField">
+  <input type="button" id="addActivityButton" value="Add Activity">
+  <input type="button" id="toSignUp" value="Go to Sign Up">`;
+
+const searchPlayers = (playerName) => {
+  let playerNames = [];
+  players.forEach(p => playerNames.push(p.name));
+  return players[playerNames.indexOf(playerName)];
+}
+
 // creates checkboxes for activities
 const pickPack = pack => {
 
   // resets currentActivities and packPick
-  currentActivities = [];
-  packPick = [];
-
-  // initializes currentActivities and packPick
-  pack.forEach(activity => {
-    currentActivities.push(activity);
-    packPick.push(activity);
-  });
+  currentActivities = pack.map(activity => {return activity;});
+  packPick = pack.map(activity => {return activity;});
 
   // settings
   let settings = "";
@@ -66,32 +95,24 @@ const pickPack = pack => {
 
     // sign up button
     document.getElementById("submitSignUp").onclick = () => {
-      let playerProceed = true;
 
       // name is empty
-      if (playerProceed && !document.getElementById("signUpName").value.trim()) {
+      if (!document.getElementById("signUpName").value.trim()) {
         document.getElementById("signUpErrorLabel").innerHTML = "Name can\'t be empty";
-        playerProceed = false;
       }
 
       // password is empty
-      if (playerProceed && !document.getElementById("signUpPassword").value.trim()) {
+      else if (!document.getElementById("signUpPassword").value.trim()) {
         document.getElementById("signUpErrorLabel").innerHTML = "Password can\'t be empty";
-        playerProceed = false;
       }
 
       // name already exists
-      if (playerProceed) {
-        players.forEach(other => {
-          if (playerProceed && other.name === document.getElementById("signUpName").value) {
-            document.getElementById("signUpErrorLabel").innerHTML = `${document.getElementById("signUpName").value} already exists`;
-            playerProceed = false;
-          }
-        });
+      else if (players.filter(other => {return other.name === document.getElementById("signUpName").value;}).length) {
+        document.getElementById("signUpErrorLabel").innerHTML = `${document.getElementById("signUpName").value} already exists`;
       }
 
       // adds new player to the game
-      if (playerProceed) {
+      else {
         player = {
           _name: document.getElementById("signUpName").value,
           _password: document.getElementById("signUpPassword").value,
@@ -158,7 +179,6 @@ const pickPack = pack => {
 
           const submitSignIn = () => {
             document.getElementById("signInErrorLabel").innerHTML = "";
-            let playerProceed = true;
           
             // name is empty
             if (!document.getElementById("signInName").value.trim())
@@ -180,7 +200,7 @@ const pickPack = pack => {
                 player = searchPlayers(document.getElementById("signInName").value);
               } catch (e) {
                 player = null;
-                console.log(Error("Player not found. player object cannot be assigned"));
+                console.error(Error("Player not found. player object cannot be assigned"));
               }
           
               // player answers questions about other players
@@ -342,9 +362,3 @@ document.getElementById("welcomeButton").onclick = () => {
     pickPack([]);
   };
 };
-
-const searchPlayers = (playerName) => {
-  let playerNames = [];
-  players.forEach(p => playerNames.push(p.name));
-  return players[playerNames.indexOf(playerName)];
-}
