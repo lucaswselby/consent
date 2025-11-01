@@ -29,7 +29,7 @@ const displayActivities = activities => {
 
             // display sign up page
             document.getElementsByTagName("MAIN")[0].innerHTML = `<label for="name">Name:</label>
-            <input type="text" id="name">
+            <input type="text" id="name" autofocus>
             <label for="password">Password:</label>
             <input type="text" id="password">
             <input type="button" id="signUp" value="Sign Up">
@@ -92,7 +92,7 @@ const displayActivities = activities => {
                     // display sign in
                     const displaySignIn = () => {
                         document.getElementsByTagName("MAIN")[0].innerHTML = `<label for="name">Name:</label>
-                        <input type="text" id="name">
+                        <input type="text" id="name" autofocus>
                         <label for="password">Password:</label>
                         <input type="text" id="password">
                         <input type="button" id="signIn" value="Sign In">
