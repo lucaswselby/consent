@@ -144,9 +144,7 @@ const displayActivities = activities => {
                             else {
                                 // remove non-matches
                                 for (let i = 0; i < activePlayer.activityMatches.length; i++) {
-                                    for (let j = 0; j < activePlayer.activityMatches[i].length; j++) {
-                                        if (!players[players.map(player => {return player.name;}).indexOf(activePlayer.activityMatches[i][j])].activityMatches[i].includes(activePlayer.name)) activePlayer.activityMatches[i].splice(j, 1);
-                                    };
+                                    activePlayer.activityMatches[i] = activePlayer.activityMatches[i].filter(playerName => {return players[players.map(player => {return player.name;}).indexOf(playerName)].activityMatches[i].includes(activePlayer.name)});
                                 };
 
                                 // see matches on second sign in
