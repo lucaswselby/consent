@@ -9,7 +9,7 @@ const displayActivities = activities => {
     <p id="error"></p>`;
 
     // add activity
-    document.getElementById("addActivity").onclick = () => {
+    const addActivity = () => {
         const errorElem = document.getElementById("error");
         errorElem.innerHTML = "";
         const newActivity = document.getElementById("newActivity").value.trim();
@@ -21,6 +21,8 @@ const displayActivities = activities => {
         }
         document.getElementById("newActivity").value = "";
     }
+    document.getElementById("addActivity").onclick = addActivity;
+    document.getElementById("newActivity").addEventListener("keydown", key => {if (key.key === "Enter") addActivity();});
 
     // submit activities
     document.getElementById("submitActivities").onclick = () => {
@@ -38,7 +40,7 @@ const displayActivities = activities => {
             <input type="button" id="everyoneIn" value="Everyone's in!">`;
 
             // sign up players
-            document.getElementById("signUp").onclick = () => {
+            const signUp = () => {
                 const errorElem = document.getElementById("error");
                 errorElem.innerHTML = "";
                 const name = document.getElementById("name").value.trim();
@@ -84,6 +86,9 @@ const displayActivities = activities => {
                     document.getElementById("password").value = "";
                 }
             }
+            document.getElementById("signUp").onclick = signUp;
+            document.getElementById("name").addEventListener("keydown", key => {if (key.key === "Enter") signUp();});
+            document.getElementById("password").addEventListener("keydown", key => {if (key.key === "Enter") signUp();});
 
             // everyone's in
             document.getElementById("everyoneIn").onclick = () => {
@@ -97,7 +102,7 @@ const displayActivities = activities => {
                         <input type="text" id="password">
                         <input type="button" id="signIn" value="Sign In">
                         <p id="error"></p>`;
-                        document.getElementById("signIn").onclick = () => {
+                        const signIn = () => {
                             const errorElem = document.getElementById("error");
                             errorElem.innerHTML = "";
                             const name = document.getElementById("name").value.trim();
@@ -161,6 +166,9 @@ const displayActivities = activities => {
                                 document.getElementById("backToSignIn").onclick = displaySignIn;
                             }
                         }
+                        document.getElementById("signIn").onclick = signIn;
+                        document.getElementById("name").addEventListener("keydown", key => {if (key.key === "Enter") signIn();});
+                        document.getElementById("password").addEventListener("keydown", key => {if (key.key === "Enter") signIn();});
                     }
                     displaySignIn();
                 }
