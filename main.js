@@ -84,6 +84,7 @@ const displayActivities = activities => {
                     // clear sign up inputs
                     document.getElementById("name").value = "";
                     document.getElementById("password").value = "";
+                    document.getElementById("name").focus();
                 }
             }
             document.getElementById("signUp").onclick = signUp;
@@ -97,11 +98,12 @@ const displayActivities = activities => {
                     // display sign in
                     const displaySignIn = () => {
                         document.getElementsByTagName("MAIN")[0].innerHTML = `<label for="name">Name:</label>
-                        <input type="text" id="name" autofocus>
+                        <input type="text" id="name" autofocus> <!-- Why isn't the autofocus working? -->
                         <label for="password">Password:</label>
                         <input type="text" id="password">
                         <input type="button" id="signIn" value="Sign In">
                         <p id="error"></p>`;
+                        document.getElementById("name").focus(); // I wouldn't need this if the autofocus worked.
                         const signIn = () => {
                             const errorElem = document.getElementById("error");
                             errorElem.innerHTML = "";
