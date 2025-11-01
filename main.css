@@ -1,29 +1,9 @@
-html {
-  height: 100%;
+ul, input, p, label {
+    display: block;
 }
-
-body {
-  position: relative;
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
-  width: 100%;
+li label, li input {
+    display: inline;
 }
-
-main {
-  padding-top: 5px;
-  padding-bottom: 60px;
-}
-
-footer {
-  text-align: center;
-  width: 100%;
-  padding: 1em 0;
-  position: absolute;
-  bottom: 0;
-}
-
-#signUpErrorLabel,
-#signInErrorLabel {
-  color: red;
+#error {
+    color: red;
 }

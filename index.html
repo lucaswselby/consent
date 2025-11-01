@@ -1,40 +1,28 @@
+
 <!DOCTYPE html>
 <html>
+    <head>
+        <title>Consent</title>
+        <link rel="stylesheet" href="./main.css">
+        <meta charset="UTF-8">
+        <meta name="keywords" content="">
+        <meta name="description" content="">
+        <meta name="author" content="Lucas Selby">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <head>
-    <title>Consent</title>
-    <link rel="stylesheet" href=".\main.css">
-    <meta charset="UTF-8">
-    <meta name="keywords" content="Consent, Game">
-    <meta name="description" content="Match with people based on activities.">
-    <meta name="author" content="Lucas Selby">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
+        <!-- Favicon -->
+        <!-- <link rel="icon" href="./favicon.png"> -->
+    </head>
 
-  <body>
-    <main>
-    <form id="changeable">
-      <p>
-        Welcome to Consent!<br>
-        Consent is:
-        <ul>
-          <li><strong>F</strong>reely Given</li>
-          <li><strong>R</strong>eversible</li>
-          <li><strong>I</strong>nformed</li>
-          <li><strong>E</strong>nthusiastic</li>
-          <li><strong>S</strong>pecific</li>
-        </ul>
-        Do you consent to this game?
-      </p>
-      <input id="welcomeButton" type="button" value="I Consent!">
-    </form>
-    </main>
+    <body>
+        <main>
+            <ul id="activities"></ul>
+            <input type="text" id="newActivity">
+            <input type="button" id="addActivity" value="Add Activity">
+            <input type="button" id="submitActivities" value="Go to Sign Up">
+            <p id="error"></p>
+        </main>
+    </body>
 
-    <footer>
-      <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/lucaswselby/consent" target="_blank">Consent</a> &copy; 2022-2023 by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/lucaswselby" target="_blank">Lucas Selby</a> is licensed under <a href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"></a></p>
-    </footer>
-  </body>
-
-  <script type="text/javascript" src=".\main.js"></script>
-
+    <script type="text/javascript" src="./main.js"></script>
 </html>
