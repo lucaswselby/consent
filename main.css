@@ -1,5 +1,36 @@
+* {
+    font-family: 'Courier New', Courier, monospace;
+}
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+main {
+    min-height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 5vw;
+    background-color: lavender;
+}
+
 ul, input, p, label {
     display: block;
+    font-size: 5vw;
+}
+input {
+    --box-shadow: .1em .1em .2em .2em hsl(271,24%,74.7%);
+    height: 1.5em;
+    width: 8em;
+    border: none;
+    background-color: thistle;
+    box-shadow: var(--box-shadow);
+    border-radius: .1em;
+}
+input:hover {
+    box-shadow: var(--box-shadow), 0 0 .1em .1em hsl(300,21.5%,72%) inset;
 }
 li label, li input {
     display: inline;
