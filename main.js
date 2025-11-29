@@ -1,12 +1,14 @@
 // display activites to choose from
 const displayActivities = activities => {
-    document.getElementsByTagName("MAIN")[0].innerHTML = `<ul id="activities">
-        ${activities.reduce((prevActivity, currActivity) => {return prevActivity + `<li>${currActivity}</li>`}, "")}
-    </ul>
-    <input type="text" id="newActivity" placeholder="type new activity here">
-    <input type="button" id="addActivity" value="add activity">
-    <input type="button" id="submitActivities" value="go to sign up">
-    <p id="error"></p>`;
+    document.getElementsByTagName("MAIN")[0].innerHTML = `<div id="activityPage" class="page">
+        <ul id="activities">
+            ${activities.reduce((prevActivity, currActivity) => {return prevActivity + `<li>${currActivity}</li>`}, "")}
+        </ul>
+        <input type="text" id="newActivity" placeholder="type new activity here">
+        <input type="button" id="addActivity" value="add activity">
+        <input type="button" id="submitActivities" value="go to sign up">
+        <p id="error"></p>
+    </div>`;
 
     // add activity
     const addActivity = () => {
@@ -30,14 +32,16 @@ const displayActivities = activities => {
             let players = [];
 
             // display sign up page
-            document.getElementsByTagName("MAIN")[0].innerHTML = `<label for="name">name:</label>
-            <input type="text" id="name" autofocus>
-            <label for="password">password:</label>
-            <input type="text" id="password">
-            <input type="button" id="signUp" value="sign up">
-            <p id="error"></p>
-            <ul id="players"></ul>
-            <input type="button" id="everyoneIn" value="everyone's in!">`;
+            document.getElementsByTagName("MAIN")[0].innerHTML = `<div id="signUpPage" class="page">
+                <label for="name">name:</label>
+                <input type="text" id="name" autofocus>
+                <label for="password">password:</label>
+                <input type="text" id="password">
+                <input type="button" id="signUp" value="sign up">
+                <p id="error"></p>
+                <ul id="players"></ul>
+                <input type="button" id="everyoneIn" value="everyone's in!">
+            </div>`;
 
             // sign up players
             const signUp = () => {
@@ -97,12 +101,14 @@ const displayActivities = activities => {
                 else {                
                     // display sign in
                     const displaySignIn = () => {
-                        document.getElementsByTagName("MAIN")[0].innerHTML = `<label for="name">name:</label>
-                        <input type="text" id="name" autofocus> <!-- Why isn't the autofocus working? -->
-                        <label for="password">password:</label>
-                        <input type="text" id="password">
-                        <input type="button" id="signIn" value="sign in">
-                        <p id="error"></p>`;
+                        document.getElementsByTagName("MAIN")[0].innerHTML = `<div id="signInPage" class="page">
+                            <label for="name">name:</label>
+                            <input type="text" id="name" autofocus> <!-- Why isn't the autofocus working? -->
+                            <label for="password">password:</label>
+                            <input type="text" id="password">
+                            <input type="button" id="signIn" value="sign in">
+                            <p id="error"></p>
+                        </div>`;
                         document.getElementById("name").focus(); // I wouldn't need this if the autofocus worked.
                         const signIn = () => {
                             const errorElem = document.getElementById("error");
@@ -119,19 +125,21 @@ const displayActivities = activities => {
                             else if (players[players.map(player => {return player.name;}).indexOf(name)].password !== password) errorElem.innerHTML = "Wrong password";
                             else if (activePlayer.firstPass) {
                                 // choose other players for each activity
-                                document.getElementsByTagName("MAIN")[0].innerHTML = `${activities.reduce((prevActivity, currActivity) => {
-                                    return prevActivity + `<p>would you like to ${currActivity}...</p>
-                                    <ul id="activity${activities.indexOf(currActivity)}">
-                                        ${otherPlayers.filter(player => {return player !== activePlayer;}).reduce((prevPlayer, currPlayer) => {
-                                            return prevPlayer + `<li>
-                                                <input type="checkbox" id="activity${activities.indexOf(currActivity)}_${currPlayer.name}">
-                                                <label for="activity${activities.indexOf(currActivity)}_${currPlayer.name}">${currPlayer.name}?</label>
-                                            </li>
-                                            `;
-                                        }, "")}
-                                    </ul>`;
-                                }, "")}
-                                <input type="button" id="doneChoosing" value="I'm done choosing!">`;
+                                document.getElementsByTagName("MAIN")[0].innerHTML = `<div id="matchingPage" class="page">
+                                    ${activities.reduce((prevActivity, currActivity) => {
+                                        return prevActivity + `<p>would you like to ${currActivity}...</p>
+                                        <ul id="activity${activities.indexOf(currActivity)}">
+                                            ${otherPlayers.filter(player => {return player !== activePlayer;}).reduce((prevPlayer, currPlayer) => {
+                                                return prevPlayer + `<li>
+                                                    <input type="checkbox" id="activity${activities.indexOf(currActivity)}_${currPlayer.name}">
+                                                    <label for="activity${activities.indexOf(currActivity)}_${currPlayer.name}">${currPlayer.name}?</label>
+                                                </li>
+                                                `;
+                                            }, "")}
+                                        </ul>`;
+                                    }, "")}
+                                    <input type="button" id="doneChoosing" value="I'm done choosing!">
+                                </div>`;
 
                                 // checking a player adds them to potential matches for that activity
                                 activities.forEach(activity => {
@@ -155,14 +163,16 @@ const displayActivities = activities => {
                                 };
 
                                 // see matches on second sign in
-                                document.getElementsByTagName("MAIN")[0].innerHTML = `${activePlayer.activityMatches.filter(matchArr => {return matchArr.length;}).length ? activePlayer.activityMatches.reduce((prevMatchArr, currMatchArr) => {return prevMatchArr + (currMatchArr.length ? `<p>you can ${activities[activePlayer.activityMatches.indexOf(currMatchArr)]}...</p>
-                                    <ul>
-                                        ${currMatchArr.reduce((prevMatch, currMatch) => {
-                                            return prevMatch + `<li>${currMatch}</li>`;
-                                        }, "")}
-                                    </ul>` : "");
-                                }, "") : "<p>NO MATCHES</p>"}
-                                <input type="button" id="backToSignIn" value="back to sign in">`;
+                                document.getElementsByTagName("MAIN")[0].innerHTML = `<div id="matchesPage" class="page">
+                                    ${activePlayer.activityMatches.filter(matchArr => {return matchArr.length;}).length ? activePlayer.activityMatches.reduce((prevMatchArr, currMatchArr) => {return prevMatchArr + (currMatchArr.length ? `<p>you can ${activities[activePlayer.activityMatches.indexOf(currMatchArr)]}...</p>
+                                        <ul>
+                                            ${currMatchArr.reduce((prevMatch, currMatch) => {
+                                                return prevMatch + `<li>${currMatch}</li>`;
+                                            }, "")}
+                                        </ul>` : "");
+                                    }, "") : "<p>NO MATCHES</p>"}
+                                    <input type="button" id="backToSignIn" value="back to sign in">
+                                </div>`;
 
                                 // back to sign in after reviewing matches
                                 document.getElementById("backToSignIn").onclick = displaySignIn;

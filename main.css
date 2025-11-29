@@ -6,7 +6,7 @@ html, body {
     height: 100%;
 }
 
-main {
+main, .page {
     min-height: 100%;
     display: flex;
     flex-flow: column nowrap;
@@ -18,16 +18,28 @@ main {
 
 ul, input, p, label {
     display: block;
-    font-size: 5vw;
+    font-size: 2vw;
 }
-input {
+input[type="text"], input[type="button"] {
     --box-shadow: .1em .1em .2em .2em hsl(271,24%,74.7%);
-    height: 1.5em;
-    width: 8em;
+    height: 6vw;
+    min-width: 50vw;
     border: none;
+    font-size: 5vw;
     background-color: thistle;
     box-shadow: var(--box-shadow);
     border-radius: .1em;
+    transition: box-shadow .2s;
+}
+
+#activityPage {
+    --font-size: 2vw;
+}
+#activityPage input, #activityPage ul {
+    font-size: var(--font-size);
+}
+#activityPage input {
+    height: calc(var(--font-size) + 1vw);
 }
 input:hover {
     box-shadow: var(--box-shadow), 0 0 .1em .1em hsl(300,21.5%,72%) inset;
