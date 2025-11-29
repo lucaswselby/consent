@@ -4,8 +4,8 @@ const displayActivities = activities => {
         ${activities.reduce((prevActivity, currActivity) => {return prevActivity + `<li>${currActivity}</li>`}, "")}
     </ul>
     <input type="text" id="newActivity">
-    <input type="button" id="addActivity" value="Add Activity">
-    <input type="button" id="submitActivities" value="Go to Sign Up">
+    <input type="button" id="addActivity" value="add activity">
+    <input type="button" id="submitActivities" value="go to sign up">
     <p id="error"></p>`;
 
     // add activity
@@ -30,14 +30,14 @@ const displayActivities = activities => {
             let players = [];
 
             // display sign up page
-            document.getElementsByTagName("MAIN")[0].innerHTML = `<label for="name">Name:</label>
+            document.getElementsByTagName("MAIN")[0].innerHTML = `<label for="name">name:</label>
             <input type="text" id="name" autofocus>
-            <label for="password">Password:</label>
+            <label for="password">password:</label>
             <input type="text" id="password">
-            <input type="button" id="signUp" value="Sign Up">
+            <input type="button" id="signUp" value="sign up">
             <p id="error"></p>
             <ul id="players"></ul>
-            <input type="button" id="everyoneIn" value="Everyone's in!">`;
+            <input type="button" id="everyoneIn" value="everyone's in!">`;
 
             // sign up players
             const signUp = () => {
@@ -97,11 +97,11 @@ const displayActivities = activities => {
                 else {                
                     // display sign in
                     const displaySignIn = () => {
-                        document.getElementsByTagName("MAIN")[0].innerHTML = `<label for="name">Name:</label>
+                        document.getElementsByTagName("MAIN")[0].innerHTML = `<label for="name">name:</label>
                         <input type="text" id="name" autofocus> <!-- Why isn't the autofocus working? -->
-                        <label for="password">Password:</label>
+                        <label for="password">password:</label>
                         <input type="text" id="password">
-                        <input type="button" id="signIn" value="Sign In">
+                        <input type="button" id="signIn" value="sign in">
                         <p id="error"></p>`;
                         document.getElementById("name").focus(); // I wouldn't need this if the autofocus worked.
                         const signIn = () => {
@@ -120,7 +120,7 @@ const displayActivities = activities => {
                             else if (activePlayer.firstPass) {
                                 // choose other players for each activity
                                 document.getElementsByTagName("MAIN")[0].innerHTML = `${activities.reduce((prevActivity, currActivity) => {
-                                    return prevActivity + `<p>Would you like to ${currActivity}...</p>
+                                    return prevActivity + `<p>would you like to ${currActivity}...</p>
                                     <ul id="activity${activities.indexOf(currActivity)}">
                                         ${otherPlayers.filter(player => {return player !== activePlayer;}).reduce((prevPlayer, currPlayer) => {
                                             return prevPlayer + `<li>
@@ -155,14 +155,14 @@ const displayActivities = activities => {
                                 };
 
                                 // see matches on second sign in
-                                document.getElementsByTagName("MAIN")[0].innerHTML = `${activePlayer.activityMatches.filter(matchArr => {return matchArr.length;}).length ? activePlayer.activityMatches.reduce((prevMatchArr, currMatchArr) => {return prevMatchArr + (currMatchArr.length ? `<p>You can ${activities[activePlayer.activityMatches.indexOf(currMatchArr)]}...</p>
+                                document.getElementsByTagName("MAIN")[0].innerHTML = `${activePlayer.activityMatches.filter(matchArr => {return matchArr.length;}).length ? activePlayer.activityMatches.reduce((prevMatchArr, currMatchArr) => {return prevMatchArr + (currMatchArr.length ? `<p>you can ${activities[activePlayer.activityMatches.indexOf(currMatchArr)]}...</p>
                                     <ul>
                                         ${currMatchArr.reduce((prevMatch, currMatch) => {
                                             return prevMatch + `<li>${currMatch}</li>`;
                                         }, "")}
                                     </ul>` : "");
                                 }, "") : "<p>NO MATCHES</p>"}
-                                <input type="button" id="backToSignIn" value="Back to Sign In">`;
+                                <input type="button" id="backToSignIn" value="back to sign in">`;
 
                                 // back to sign in after reviewing matches
                                 document.getElementById("backToSignIn").onclick = displaySignIn;
