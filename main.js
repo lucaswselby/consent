@@ -3,7 +3,7 @@ const displayActivities = activities => {
     document.getElementsByTagName("MAIN")[0].innerHTML = `<ul id="activities">
         ${activities.reduce((prevActivity, currActivity) => {return prevActivity + `<li>${currActivity}</li>`}, "")}
     </ul>
-    <input type="text" id="newActivity">
+    <input type="text" id="newActivity" placeholder="type new activity here">
     <input type="button" id="addActivity" value="add activity">
     <input type="button" id="submitActivities" value="go to sign up">
     <p id="error"></p>`;
