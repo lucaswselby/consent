@@ -196,6 +196,6 @@ const displayActivities = activities => {
 }
 
 // choose a pack to start
-document.getElementById("datePack").onclick = () => {displayActivities(["watch Chicago", "watch Dimension 20", "watch a Dropout show", "write", "have sex", "listen to The Judgies", "play HPHB", "research local activities", "play Lego HP", "write music", "Legos", "play a board game", "watch Sex Education", "watch Clone Wars", "cook", "Pok&eacute;mon Go", "plan a wedding", "organize art supplies", "go through fabric box", "read", "make art"].map(option => {return `${option} with`;}));};
+document.getElementById("datePack").onclick = () => {displayActivities(["watch Chicago", "watch Dimension 20", "watch a Dropout show", "write", "have sex", "listen to The Judgies", "play HPHB", "research local activities", "play Lego HP", "write music", "Legos", "play a board game", "watch Clone Wars", "cook", "plan a wedding", "organize art supplies", "go through fabric box", "read", "make art"].map(option => {return `${option} with`;}));};
 document.getElementById("foodPack").onclick = () => {displayActivities(["Salad and Go", "Subway", "Chinese", "Chipotle", "Mexican", "breakfast/diner food", "Italian", "burgers", "pizza", "frozen pizza"].map(option => {return `eat ${option} with`;}));};
 document.getElementById("customPack").onclick = () => {displayActivities([]);};
